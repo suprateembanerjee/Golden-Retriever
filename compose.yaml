@@ -1,0 +1,43 @@
+# Author: Suprateem Banerjee [www.github.com/suprateembanerjee]
+
+version: "3.8"
+
+services:
+
+  mongo:
+    image: mongo:7.0
+    ports: 
+      - 27017:27017
+    networks:
+      - node-network
+    privileged: true
+    command: ["mongod", "--port", "27017"]
+
+  frontend:
+    image: rag-frontend
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - 5173:5173
+    command: npm run dev
+    networks:
+      - node-network
+    privileged: true
+
+
+  backend:
+    image: rag-backend
+    build: 
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - 5000:5000
+    networks:
+      - node-network
+    command: python3 src/api.py
+    privileged: true
+
+networks:
+  node-network:
+    driver: bridge
