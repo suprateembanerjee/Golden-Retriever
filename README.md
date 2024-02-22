@@ -1,7 +1,7 @@
 # Golden-Retriever
 A Langchain-based RAG application using Angle Embeddings and Cohere Reranker to fetch relevant emails based on query.
 
-![rag](https://github.com/suprateembanerjee/Golden-Retriever/assets/26841866/c25261c2-5b23-4c46-a031-2752c091afa4)
+<img width="1134" alt="Screenshot 2024-02-21 at 11 41 52 PM" src="https://github.com/suprateembanerjee/Golden-Retriever/assets/26841866/25b84338-cdf0-4d7c-afcf-bc3dd60da425">
 
 ## Usage
 
@@ -9,6 +9,8 @@ A Langchain-based RAG application using Angle Embeddings and Cohere Reranker to 
 `docker compose up`
 
 The app is served on `localhost:5173/`
+
+![rag](https://github.com/suprateembanerjee/Golden-Retriever/assets/26841866/c25261c2-5b23-4c46-a031-2752c091afa4)
 
 ## Pipeline
 
