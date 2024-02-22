@@ -1,5 +1,6 @@
 # Golden-Retriever
 A Langchain-based RAG application using Angle Embeddings and Cohere Reranker to fetch relevant emails based on query.
+
 ![rag](https://github.com/suprateembanerjee/Golden-Retriever/assets/26841866/c25261c2-5b23-4c46-a031-2752c091afa4)
 
 ## Usage
