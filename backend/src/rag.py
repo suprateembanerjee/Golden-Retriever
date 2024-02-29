@@ -1,5 +1,5 @@
 # Author: Suprateem Banerjee [www.github.com/suprateembanerjee]
-# Usage: python rag.py "What events am I attending this week?""
+# Usage: python rag.py "What are the events that I registered for the upcoming week?""
 
 from langchain.document_loaders import DirectoryLoader, TextLoader
 from langchain.chains import ConversationalRetrievalChain

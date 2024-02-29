@@ -296,6 +296,7 @@ h1{
   top:10%;
   margin-top:-20px;
   left:60%;
+  /* margin-left:-50px; */
   width:100px;  
 
   text-align: center;
@@ -321,6 +322,12 @@ h1{
   box-shadow: rgba(40, 170, 255, 0.25) 0 0 0 .125em;
 }
 
+
+
+
+
+
+
 .configDialogs {
   background-color: #2d2d2d;
   border-radius: 30px;
@@ -328,6 +335,8 @@ h1{
   padding: 20px;
   width: 700px;
 }
+
+
 
 .form {
   background-color: #2d2d2d;
@@ -493,8 +502,21 @@ h1{
   white-space: nowrap;
 }
 
+
 .submit:active {
   background-color: #06b;
+}
+
+
+
+
+
+
+
+
+
+* {
+	box-sizing: border-box;
 }
 
 p {
@@ -545,9 +567,40 @@ li::before {
 	background: linear-gradient(to right, var(--c1) var(--stop), var(--c2) var(--stop));
 }
 
+h3 {
+	display: flex;
+	align-items: baseline;
+	margin: 0 0 1rem;
+	color: rgb(70 70 70);
+}
+
+h3::before {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex: 0 0 auto;
+	margin-right: 1rem;
+	width: 3rem;
+	height: 3rem;
+	content: counter(list);
+	padding: 1rem;
+	border-radius: 50%;
+	background-color: var(--c1);
+	color: white;
+}
+
 @media (min-width: 40em) {
 	li {
 		margin: 3rem auto;
 		padding: 3rem 2rem 2rem;
+	}
+	
+	h3 {
+		font-size: 2.25rem;
+		margin: 0 0 2rem;
+	}
+	
+	h3::before {
+		margin-right: 1.5rem;
 	}
 }
