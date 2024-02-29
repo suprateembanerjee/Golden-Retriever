@@ -15,11 +15,11 @@ function display_result(data) {
     li.innerText =  data['emails'][i]["Subject"] + "\n" + data['emails'][i]["Sender"] + "\n\n" + data['emails'][i]["Message"].substring(0, 700) + "...";
     list.appendChild(li);
  }
-
 }
 
-function postData() {
-    display_info();
+function fetchHandler() {
+  query = (document.getElementById('query') as HTMLInputElement).value;
+  if (query != ''){
     fetch("http://localhost:5000/rag", {
       method: 'POST',
       headers: {'Content-Type' : 'application/json'},
@@ -30,12 +30,6 @@ function postData() {
       'mongodb_url': mongodb_url})
     }).then(res => res.json())
     .then(data => display_result(data));
-  }
-
-function fetchHandler() {
-  query = (document.getElementById('query') as HTMLInputElement).value;
-  if (query != ''){
-    postData()
   }
   else {
     document.getElementById("List").innerHTML = "";
@@ -51,19 +45,11 @@ function gatherHandler() {
     })
 }
 
-function display_info() {
-  console.log(pinecone_api);
-  console.log(cohere_api);
-  console.log(mongodb_url);
-  console.log(pinecone_index);
-}
-
 function submitHandler() {
   pinecone_api = (document.getElementById('pinecone_api') as HTMLInputElement).value;
   cohere_api = (document.getElementById('cohere_api') as HTMLInputElement).value;
   pinecone_index = (document.getElementById('pinecone_index') as HTMLInputElement).value;
   mongodb_url = (document.getElementById('mongodb_url') as HTMLInputElement).value;
-  // display_info();
   (document.getElementById('configDialog') as HTMLFormElement).close();
 }
 

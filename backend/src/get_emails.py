@@ -16,21 +16,16 @@ import re
 import pymongo
 import json
 
-# If modifying these scopes, delete the file token.json.
 SCOPES = ["https://www.googleapis.com/auth/gmail.readonly"]
 
 
 def getEmails(mongodb_url:str): 
-    # Variable creds will store the user access token. 
-    # If no valid token found, we will create one. 
+
     creds = None
   
-    # The file token.pickle contains the user access token. 
-    # Check if it exists 
     if os.path.exists("res/token.json"):
         creds = Credentials.from_authorized_user_file("res/token.json", SCOPES)
   
-    # If credentials are not available or are invalid, ask the user to log in. 
     if not creds or not creds.valid: 
         if creds and creds.expired and creds.refresh_token: 
             creds.refresh(Request()) 
@@ -38,28 +33,17 @@ def getEmails(mongodb_url:str):
             flow = InstalledAppFlow.from_client_secrets_file('res/credentials.json', SCOPES) 
             creds = flow.run_local_server(port=0) 
   
-        # Save the access token in token.pickle file for the next run 
-        # with open('res/token.pickle', 'wb') as token: 
-        #     pickle.dump(creds, token) 
+        with open('res/token.json', 'wb') as token: 
+            pickle.dump(creds, token) 
   
-    # Connect to the Gmail API 
     service = build('gmail', 'v1', credentials=creds) 
 
     today = date.today()
     t_minus_2m = today - timedelta(60)
 
-    # Dates have to formatted in YYYY/MM/DD format for gmail
     query = f"before: {today.strftime('%Y/%m/%d')} after: {t_minus_2m.strftime('%Y/%m/%d')} in:inbox category:primary"
-
-  
-    # request a list of all the messages
     result = service.users().messages().list(userId='me', q=query).execute()
-  
-    # We can also pass maxResults to get any number of emails. Like this: 
-    # result = service.users().messages().list(maxResults=200, userId='me').execute() 
     messages = result.get('messages')
-  
-    # messages is a list of dictionaries where each dictionary contains a message id. 
 
     mongo_client = pymongo.MongoClient(mongodb_url)
     db = mongo_client['emails_db']
@@ -74,29 +58,21 @@ def getEmails(mongodb_url:str):
 
     i = 1
 
-    # iterate through all the messages 
-    for msg in messages: 
-        # Get the message from its id 
-        txt = service.users().messages().get(userId='me', id=msg['id']).execute() 
+    for message in messages: 
 
-        # Get the timestamp when mail was received
-        timestamp = datetime.fromtimestamp(float(txt['internalDate']) / 1000.0).strftime('%Y-%m-%d %H:%M:%S.%f')
+        text = service.users().messages().get(userId='me', id=message['id']).execute() 
+        timestamp = datetime.fromtimestamp(float(text['internalDate']) / 1000.0).strftime('%Y-%m-%d %H:%M:%S.%f')
   
-        # Use try-except to avoid any Errors 
         try: 
-            # Get value of 'payload' from dictionary 'txt' 
-            payload = txt['payload'] 
+            payload = text['payload'] 
             headers = payload['headers'] 
 
-            # Look for Subject and Sender Email in the headers 
             for d in headers: 
                 if d['name'] == 'Subject': 
                     subject = d['value'] 
                 if d['name'] == 'From': 
                     sender = d['value']
 
-            # The Body of the message is in Encrypted format. So, we have to decode it. 
-            # Get the data and decode it with base 64 decoder. 
             if 'parts' not in payload:
                 data = payload['body']['data']
             else:
