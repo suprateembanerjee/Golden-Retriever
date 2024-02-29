@@ -2,3 +2,4 @@ frontend/node_modules
 frontend/dist
 backend/res/*
 backend/src/__pycache__
+.DS_Store
